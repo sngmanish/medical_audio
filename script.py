@@ -29,11 +29,10 @@ class Speech:
                 if audio is None: return
 
                 text = r.recognize_google(audio)
-                if(text.lower() == "Logout"):
-                    del self
-                    return
 
-                db.child("Doctor").push(self.getDict(text),self.user["idToken"])
+                x = str(self.user['email']).split('@')
+
+                db.child("Doctor").child(x).push(self.getDict(text),self.user['idToken'])
 
                 print(f"sent to firebase: {text}")
 
@@ -45,7 +44,7 @@ class Speech:
                 return
             finally:
                 audio_queue.task_done()
-
+                
 if __name__ == '__main__':
 
     with open("config.json",'r') as configuration_file:
@@ -59,13 +58,12 @@ if __name__ == '__main__':
         email = "test@gmail.com"
         password = "123456"
         try:
-            user = auth.sign_in_with_email_and_password(f"{email}",f"{password}")
+            user = auth.sign_in_with_email_and_password(email,password)
             break
         except Exception as e:
-            print(f"error {e}")
+            print("password wrong")
             continue
 
-    idToken = user["idToken"]
     speech = Speech(user)
     recognize_thread = Thread(target=speech.recognize_worker,daemon=True)
     recognize_thread.start()
