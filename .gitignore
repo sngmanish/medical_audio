@@ -130,3 +130,6 @@ dmypy.json
 
 # firebase configuration
 config.json
+
+# Google API configuration
+./docs/credentials.json
