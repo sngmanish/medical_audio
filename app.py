@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,url_for,redirect
+pytfrom flask import Flask,render_template,request,url_for,redirect
 import pyrebase
 import json
 from time import gmtime, strftime
